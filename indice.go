@@ -4,6 +4,12 @@ import (
 	"github.com/dadosjusbr/proto/coleta"
 )
 
+type Score struct {
+	Score             float64
+	CompletenessScore float64
+	EasinessScore     float64
+}
+
 func calcCriteria(criteria bool, value float64) float64 {
 	if criteria {
 		return value
@@ -57,4 +63,17 @@ func calcScore(meta coleta.Metadados) float64 {
 	score = (completeness + easiness) / 2
 
 	return score
+}
+
+func CalcScore(meta coleta.Metadados) Score {
+	var score = 0.0
+	var completeness = calcCompletenessScore(meta)
+	var easiness = calcEasinessScore(meta)
+	score = (completeness + easiness) / 2
+
+	return Score{
+		Score:             score,
+		CompletenessScore: completeness,
+		EasinessScore:     easiness,
+	}
 }
