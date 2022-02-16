@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/dadosjusbr/proto/coleta"
-	"github.com/matryer/is"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCalcCompletenessScore(t *testing.T) {
@@ -37,13 +37,20 @@ func TestCalcCompletenessScore(t *testing.T) {
 			OutrasReceitas: coleta.Metadados_DETALHADO,
 			Despesas:       coleta.Metadados_DETALHADO,
 		}, 0.5},
+		{"mppb-11-2021", coleta.Metadados{
+			TemMatricula:   true,
+			TemLotacao:     true,
+			TemCargo:       true,
+			ReceitaBase:    coleta.Metadados_DETALHADO,
+			OutrasReceitas: coleta.Metadados_DETALHADO,
+			Despesas:       coleta.Metadados_DETALHADO,
+		}, 1},
 	}
 
 	for _, d := range data {
 		t.Run(d.Desc, func(t *testing.T) {
-			is := is.New(t)
 			b := calcCompletenessScore(d.Input)
-			is.Equal(b, d.Expected)
+			assert.Equal(t, d.Expected, b)
 		})
 	}
 }
@@ -75,13 +82,19 @@ func TestCalcEasinessScore(t *testing.T) {
 			FormatoConsistente:  true,
 			EstritamenteTabular: true,
 		}, 0.8},
+		{"mppb-11-2021", coleta.Metadados{
+			NaoRequerLogin:      true,
+			NaoRequerCaptcha:    true,
+			Acesso:              coleta.Metadados_AMIGAVEL_PARA_RASPAGEM,
+			FormatoConsistente:  true,
+			EstritamenteTabular: false,
+		}, 0.7},
 	}
 
 	for _, d := range data {
 		t.Run(d.Desc, func(t *testing.T) {
-			is := is.New(t)
 			b := calcEasinessScore(d.Input)
-			is.Equal(b, d.Expected)
+			assert.Equal(t, d.Expected, b)
 		})
 	}
 }
@@ -90,7 +103,7 @@ func TestCalcScore(t *testing.T) {
 	data := []struct {
 		Desc     string
 		Input    coleta.Metadados
-		Expected float64
+		Expected Score
 	}{
 		{"Sempre positivo", coleta.Metadados{
 			TemMatricula:        true,
@@ -104,7 +117,7 @@ func TestCalcScore(t *testing.T) {
 			Acesso:              coleta.Metadados_ACESSO_DIRETO,
 			FormatoConsistente:  true,
 			EstritamenteTabular: true,
-		}, 1.0},
+		}, Score{1, 1, 1}},
 		{"Sempre negativo", coleta.Metadados{
 			TemMatricula:        false,
 			TemLotacao:          false,
@@ -117,7 +130,7 @@ func TestCalcScore(t *testing.T) {
 			Acesso:              coleta.Metadados_NECESSITA_SIMULACAO_USUARIO,
 			FormatoConsistente:  false,
 			EstritamenteTabular: false,
-		}, 0.0},
+		}, Score{0, 0, 0}},
 		{"CNJ-2020", coleta.Metadados{
 			TemMatricula:        false,
 			TemLotacao:          false,
@@ -130,14 +143,28 @@ func TestCalcScore(t *testing.T) {
 			Acesso:              coleta.Metadados_NECESSITA_SIMULACAO_USUARIO,
 			FormatoConsistente:  true,
 			EstritamenteTabular: true,
-		}, 0.65},
+		}, Score{0.62, 0.5, 0.8}},
+		{"mppb-11-2021", coleta.Metadados{
+			TemMatricula:        true,
+			TemLotacao:          true,
+			TemCargo:            true,
+			ReceitaBase:         coleta.Metadados_DETALHADO,
+			OutrasReceitas:      coleta.Metadados_DETALHADO,
+			Despesas:            coleta.Metadados_DETALHADO,
+			NaoRequerLogin:      true,
+			NaoRequerCaptcha:    true,
+			Acesso:              coleta.Metadados_AMIGAVEL_PARA_RASPAGEM,
+			FormatoConsistente:  true,
+			EstritamenteTabular: false,
+		}, Score{0.82, 1, 0.7}},
 	}
 
 	for _, d := range data {
 		t.Run(d.Desc, func(t *testing.T) {
-			is := is.New(t)
-			b := calcScore(d.Input)
-			is.Equal(b, d.Expected)
+			b := CalcScore(d.Input)
+			assert.InDelta(t, d.Expected.Score, b.Score, 0.01)
+			assert.InDelta(t, d.Expected.CompletenessScore, b.CompletenessScore, 0.01)
+			assert.InDelta(t, d.Expected.EasinessScore, b.EasinessScore, 0.01)
 		})
 	}
 }
