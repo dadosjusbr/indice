@@ -45,6 +45,14 @@ func TestCalcCompletenessScore(t *testing.T) {
 			OutrasReceitas: coleta.Metadados_DETALHADO,
 			Despesas:       coleta.Metadados_DETALHADO,
 		}, 1},
+		{"mpto-6-2019", coleta.Metadados{
+			TemMatricula:   true,
+			TemLotacao:     true,
+			TemCargo:       true,
+			ReceitaBase:    coleta.Metadados_DETALHADO,
+			OutrasReceitas: coleta.Metadados_DETALHADO,
+			Despesas:       coleta.Metadados_DETALHADO,
+		}, 1},
 	}
 
 	for _, d := range data {
@@ -89,6 +97,13 @@ func TestCalcEasinessScore(t *testing.T) {
 			FormatoConsistente:  true,
 			EstritamenteTabular: false,
 		}, 0.7},
+		{"mpto-6-2019", coleta.Metadados{
+			NaoRequerLogin:      true,
+			NaoRequerCaptcha:    true,
+			Acesso:              coleta.Metadados_RASPAGEM_DIFICULTADA,
+			FormatoConsistente:  false,
+			EstritamenteTabular: false,
+		}, 0.45},
 	}
 
 	for _, d := range data {
@@ -157,6 +172,19 @@ func TestCalcScore(t *testing.T) {
 			FormatoConsistente:  true,
 			EstritamenteTabular: false,
 		}, Score{0.82, 1, 0.7}},
+		{"mpto-6-2019", coleta.Metadados{
+			TemMatricula:        true,
+			TemLotacao:          true,
+			TemCargo:            true,
+			ReceitaBase:         coleta.Metadados_DETALHADO,
+			OutrasReceitas:      coleta.Metadados_DETALHADO,
+			Despesas:            coleta.Metadados_DETALHADO,
+			NaoRequerLogin:      true,
+			NaoRequerCaptcha:    true,
+			Acesso:              coleta.Metadados_RASPAGEM_DIFICULTADA,
+			FormatoConsistente:  false,
+			EstritamenteTabular: false,
+		}, Score{0.62, 1, 0.45}},
 	}
 
 	for _, d := range data {
