@@ -47,13 +47,11 @@ func calcEasinessScore(meta coleta.Metadados) float64 {
 		"AMIGAVEL_PARA_RASPAGEM": 0.5,
 		"RASPAGEM_DIFICULTADA":   0.25}
 
-	score = score + calcCriteria(meta.NaoRequerLogin, 1)
-	score = score + calcCriteria(meta.NaoRequerCaptcha, 1)
 	score = score + calcStringCriteria(meta.Acesso.String(), options)
 	score = score + calcCriteria(meta.FormatoConsistente, 1)
 	score = score + calcCriteria(meta.EstritamenteTabular, 1)
 
-	return score / 5
+	return score / 3
 }
 
 func CalcScore(meta coleta.Metadados) Score {
