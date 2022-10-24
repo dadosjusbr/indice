@@ -43,15 +43,15 @@ func calcCompletenessScore(meta coleta.Metadados) float64 {
 func calcEasinessScore(meta coleta.Metadados) float64 {
 	var score float64 = 0
 	var options = map[string]float64{
-		"ACESSO_DIRETO":          1,
-		"AMIGAVEL_PARA_RASPAGEM": 0.5,
-		"RASPAGEM_DIFICULTADA":   0.25}
+		"ACESSO_DIRETO":      1,
+		"NECESSITA_RASPAGEM": 0.5}
 
 	score = score + calcStringCriteria(meta.Acesso.String(), options)
 	score = score + calcCriteria(meta.FormatoConsistente, 1)
 	score = score + calcCriteria(meta.EstritamenteTabular, 1)
+	score = score + calcCriteria(meta.FormatoAberto, 1)
 
-	return score / 3
+	return score / 4
 }
 
 func CalcScore(meta coleta.Metadados) Score {
