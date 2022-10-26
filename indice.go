@@ -45,19 +45,11 @@ func calcEasinessScore(meta coleta.Metadados) float64 {
 	var options = map[string]float64{
 		"ACESSO_DIRETO":      1,
 		"NECESSITA_RASPAGEM": 0.5}
-	// Formatos abertos
-	var extensions = map[string]float64{
-		"PDF":  1,
-		"ODS":  1,
-		"JSON": 1,
-		"CSV":  1,
-		"HTML": 1,
-		"ODT":  1}
 
 	score = score + calcStringCriteria(meta.Acesso.String(), options)
 	score = score + calcCriteria(meta.FormatoConsistente, 1)
 	score = score + calcCriteria(meta.EstritamenteTabular, 1)
-	score = score + calcStringCriteria(meta.Extensao.String(), extensions)
+	score = score + calcCriteria(meta.FormatoAberto, 1)
 
 	return score / 4
 }
