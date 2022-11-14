@@ -43,14 +43,8 @@ func calcCompletenessScore(meta coleta.Metadados) float64 {
 func calcEasinessScore(meta coleta.Metadados) float64 {
 	var score float64 = 0
 	var options = map[string]float64{
-		"ACESSO_DIRETO":          1,
-		"AMIGAVEL_PARA_RASPAGEM": 1, // será removido posteriormente
-		"RASPAGEM_DIFICULTADA":   0.5}
-
-	// Com a mudança do índice, o nível de acesso foi reduzido a 3 níveis:
-	// Acesso direto, raspagem dificultada e necessita simulação de usuário.
-	// A pontuação de "amigável para raspagem" foi modificada temporariamente durante o processo
-	// de remoção dessa forma de acesso a fim de que não afete o cálculo do índice.
+		"ACESSO_DIRETO":        1,
+		"RASPAGEM_DIFICULTADA": 0.5}
 
 	score = score + calcStringCriteria(meta.Acesso.String(), options)
 	score = score + calcCriteria(meta.FormatoConsistente, 1)
