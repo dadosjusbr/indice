@@ -160,7 +160,7 @@ func TestCalcScore(t *testing.T) {
 			ReceitaBase:         coleta.Metadados_DETALHADO,
 			OutrasReceitas:      coleta.Metadados_DETALHADO,
 			Despesas:            coleta.Metadados_DETALHADO,
-			Acesso:              coleta.Metadados_AMIGAVEL_PARA_RASPAGEM,
+			Acesso:              coleta.Metadados_ACESSO_DIRETO,
 			FormatoConsistente:  true,
 			EstritamenteTabular: false,
 			FormatoAberto:       true,
