@@ -3,7 +3,7 @@ module github.com/dadosjusbr/indice
 go 1.17
 
 require (
-	github.com/dadosjusbr/proto v0.0.0-20221111143805-a41e9c57346c
+	github.com/dadosjusbr/proto v0.0.0-20221212025627-91c60aa3cd12
 	github.com/stretchr/testify v1.7.0
 )
 
